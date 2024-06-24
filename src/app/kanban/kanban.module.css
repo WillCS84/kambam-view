@@ -1,0 +1,64 @@
+.header {
+  border-bottom: 1px solid cyan;
+  width: 100%;
+  height: calc(100vh - 80%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  padding: 0 14rem 1rem 12rem;
+}
+
+.cardBody {
+  width: 100%;
+  height: calc(100vh - 28%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  position: absolute;
+}
+
+.cardGrid {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  height: 100%;
+  align-items: center;
+  padding: 1rem 1rem;
+}
+
+.divHeader {
+  color: blueviolet;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.link {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .divHeader:hover .link:hover {
+    color: lightgreen;
+  }
+
+  .divHeader:hover .link:hover span {
+    transform: translateX(4px);
+  }
+}
+
+.modal {
+  width: 45%;
+  height: calc(100vh - 35%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  background-color: gray;
+  left: 25%;
+  top: 25%;
+  padding: 1rem 1rem;
+}

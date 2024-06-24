@@ -1,0 +1,55 @@
+@media (hover: hover) and (pointer: fine) {
+  .divHeader:hover .link:hover {
+    color: lightgreen;
+  }
+
+  .divHeader:hover .link:hover span {
+    transform: translateX(4px);
+  }
+}
+
+.divHeader {
+  color: blueviolet;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.main {
+  width: 35%;
+  height: 420px;
+  border: 1px solid cyan;
+  position: absolute;
+  left: 32%;
+  top: 30%;
+  border-radius: 12px;
+  background-color: lightskyblue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 0.5rem;
+}
+
+.form input {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  width: 30rem;
+  height: 2rem;
+  padding: 0.5rem 0.5rem;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}

@@ -1,36 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 id='titulo' align="center"> Meu Kanban </h1>
 
-## Getting Started
+![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
 
-First, run the development server:
+# Índice
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- [Título](#titulo)
+- [Índice](#índice)
+- [Descrição do Projeto](#Descrição-do-projeto)
+- [Funcionalidades](#Funcionalidades-do-projeto)
+- [Tecnologias utilizadas](#tecnologias-utilizadas)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Descrição do projeto
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Projeto em Desenvolvimento para fins de aprendizado, se trata de um gerenciador de tarefas com níveis de permissão, onde
+cada perfil tem restriçoes de acordo com a permissão atribuída!
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Funcionalidades do projeto
 
-## Learn More
+- `Funcionalidade 1`: Login com usuário e senha
+- `Funcionalidade 1a`: criar um usuário e senha
+- `Funcionalidade 1b`: atribuir permissão de acesso ao criar usuário e senha
+- `Funcionalidade 2`: gerenciar tarefas, criar, alterar situação da tarefa, remover e arquivar,
 
-To learn more about Next.js, take a look at the following resources:
+# Tecnologias utilizadas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- NextJs v14.2.4
+- Visual Studio Code
+- primeract v3.3.1
+- formik v2.4.6
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
