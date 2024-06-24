@@ -70,11 +70,11 @@ export default function Register() {
           localStorage.setItem("profile", JSON.stringify(res.response.profiles))
         }
       })
-      // await saveUserMongo(values)
-      //   .then((data) => {
-      //     console.log("user create mongo", data)
-      //   })
-      //   .catch((err) => console.log("error", err))
+      await saveUserMongo(values)
+        .then((data) => {
+          console.log("user create mongo", data)
+        })
+        .catch((err) => console.log("error", err))
     }
   })
 

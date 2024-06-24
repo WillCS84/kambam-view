@@ -132,7 +132,7 @@ export default function kanban() {
 
   const onSituationNextLevel = (task: any, arquivar: boolean) => {
     if (arquivar) {
-      // arquivarMongo(task)
+      arquivarMongo(task)
     }
     const newTarefas = tarefas.map((tarefa) => {
       if (tarefa.id_task === task.id_task) {
