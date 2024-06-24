@@ -1,9 +1,9 @@
+import { saveTaskMongoDb } from "@/database/Controllers/TaskController"
 import { Request, Response } from "express"
 
-import { saveUserMongoDB } from "../../database/Controllers/UserController"
-
 export default async function handler(req: Request, res: Response) {
-  const response = await saveUserMongoDB(req.body)
+  console.log("req", req.body)
+  const response = await saveTaskMongoDb(req.body)
     .then((data) => {})
     .catch((err) => console.log("error", err))
 

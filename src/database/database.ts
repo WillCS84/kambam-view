@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 mongoose.set("strictQuery", true)
 
 const connect = async () => {
-  return await mongoose.connect("mongodb://admin:admin@localhost:27017/")
+  return await mongoose.connect("mongodb://admin:admin@mymongodb:27017/", { serverSelectionTimeoutMS: 50000 })
 }
 
 const disconnect = async () => {

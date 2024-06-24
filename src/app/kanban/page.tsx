@@ -7,6 +7,7 @@ import { IoHomeOutline } from "react-icons/io5"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import Task from "./task"
+import { saveTaskMongo } from "@/api/taskApi"
 
 interface ITask {
   title: string
@@ -46,7 +47,6 @@ export default function kanban() {
   const [permission, setPermission] = useState(false)
   const [tarefas, setTarefas] = useState(taskCard())
 
-  console.log("permission", permission)
   const [visible, setVisible] = useState(false)
   function getItems(name: string) {
     if (typeof window !== "undefined") {
@@ -90,7 +90,7 @@ export default function kanban() {
             icon="pi pi-angle-double-right"
             rounded
             tooltipOptions={{ position: "top", mouseTrack: true, mouseTrackTop: 15 }}
-            onClick={() => onSituationNextLevel(task)}
+            onClick={() => onSituationNextLevel(task, title === "Arquivar" ? true : false)}
             style={{ marginLeft: "0.5em", marginRight: "0.5rem", border: "none" }}
           />
           {isButton && (
@@ -122,7 +122,18 @@ export default function kanban() {
       )
   }
 
-  const onSituationNextLevel = (task: any) => {
+  const arquivarMongo = async (task: any) => {
+    await saveTaskMongo(task)
+      .then((data) => {
+        console.log("task create mongo", data)
+      })
+      .catch((err) => console.log("error", err))
+  }
+
+  const onSituationNextLevel = (task: any, arquivar: boolean) => {
+    if (arquivar) {
+      // arquivarMongo(task)
+    }
     const newTarefas = tarefas.map((tarefa) => {
       if (tarefa.id_task === task.id_task) {
         switch (tarefa.situation) {
@@ -159,7 +170,7 @@ export default function kanban() {
     setTarefas(newTarefas)
   }
 
-  const onRemoveTask = (task: any) => {
+  const onRemoveTask = async (task: any) => {
     const newTarefas = tarefas.filter((tarefa) => tarefa.id_task !== task.id_task)
 
     setTarefas(newTarefas)

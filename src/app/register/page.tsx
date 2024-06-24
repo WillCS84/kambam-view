@@ -72,7 +72,7 @@ export default function Register() {
       })
       // await saveUserMongo(values)
       //   .then((data) => {
-      //     console.log("data", data)
+      //     console.log("user create mongo", data)
       //   })
       //   .catch((err) => console.log("error", err))
     }
