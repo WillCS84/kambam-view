@@ -22,9 +22,9 @@ const taskFormSchema = z.object({
   status: z.number()
 })
 
-type createTaskFormSchema = z.infer<typeof taskFormSchema>
+export type createTaskFormSchema = z.infer<typeof taskFormSchema>
 
-export default function CreateTask({ setVisible }: any) {
+export default function CreateTask({ setVisible, setTasks }: any) {
   const [status, setStatus] = useState()
 
   const fetchTasks = async () => {
@@ -49,7 +49,11 @@ export default function CreateTask({ setVisible }: any) {
       showSuccess("Tarefa criada com sucesso!")
       reset()
       setVisible(false)
-      fetchTasks()
+      fetchTasks().then((res) => {
+        if (!res.data.error) {
+          setTasks(res.data.tasks)
+        }
+      })
     })
   }
 

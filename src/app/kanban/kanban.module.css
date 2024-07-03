@@ -88,3 +88,27 @@
   width: 100%;
   margin-bottom: 12px;
 }
+
+.card_task {
+  width: 100%;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card_task h2 {
+  color: #006494;
+  padding: 0.5rem;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.card_task span {
+  color: blue;
+  padding: 0.5rem 1rem;
+}
+
+.card_footer {
+  padding: 0.2rem 0.8rem;
+}

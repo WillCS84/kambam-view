@@ -3,21 +3,35 @@ import Link from "next/link"
 import style from "../kanban.module.css"
 import { IoHomeOutline } from "react-icons/io5"
 import { Button } from "primereact/button"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import Modal from "./modal"
-import CreateTask from "./createTask"
+import CreateTask, { createTaskFormSchema } from "./createTask"
+import { AxiosResponse } from "axios"
+import { getItems } from "@/components/Utils"
 
 interface IUser {
   name: string
   id_profile: number
 }
 
-export default function MenuKanban() {
+interface TaskProps {
+  setTasks: Dispatch<SetStateAction<createTaskFormSchema[]>>
+}
+
+export default function MenuKanban({ setTasks }: TaskProps) {
   const [user, setUser] = useState<IUser>()
   const [permission, setPermission] = useState(false)
   const [children, setChildren] = useState<React.ReactNode>()
   const [title, setTitle] = useState("")
   const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const userStorage = getItems("user")
+
+    if (userStorage) {
+      setUser(userStorage)
+    }
+  }, [])
 
   return (
     <div className={style.menu}>
@@ -37,20 +51,20 @@ export default function MenuKanban() {
         <Button
           label="Criar Tarefa"
           severity="success"
+          style={{ padding: "1rem", borderRadius: "18px" }}
           icon="pi pi-plus"
-          className="p-1"
           disabled={permission}
           onClick={() => {
-            setChildren(<CreateTask setVisible={() => setVisible(false)} />)
+            setChildren(<CreateTask setVisible={() => setVisible(false)} setTasks={setTasks} />)
             setTitle("Tarefas")
             setVisible(true)
           }}
         />
         <Button
           label="Editar Usuário"
-          severity="info"
           icon="pi pi-user"
-          className="p-1"
+          severity="info"
+          style={{ padding: "1rem", borderRadius: "18px" }}
           disabled={permission}
           onClick={() => {
             setVisible(true)
@@ -61,9 +75,9 @@ export default function MenuKanban() {
         />
         <Button
           label="Perfil"
-          severity="warning"
+          style={{ padding: "1rem", borderRadius: "18px" }}
           icon="pi pi-pencil"
-          className="p-1"
+          severity="help"
           disabled={permission}
           onClick={() => {
             setVisible(true)
