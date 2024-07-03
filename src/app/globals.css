@@ -14,6 +14,8 @@
   --card-fazendo: #b4e1ff;
   --card-feito: #c1ff9b;
   --card-pendente: #fcaa67;
+  --text-danger: #bf0603;
+  --text-label: #56CBF9
 
   --primary-glow: conic-gradient(
     from 180deg at 50% 50%,
@@ -91,4 +93,15 @@ p {
     color-scheme: dark;
   }
 }
+
+.p-dropdown-items {
+  padding: 0.5rem 0.5rem;
+  color: blue;
+  font-size: 18px;
+  
+}
+
+
+
+
 

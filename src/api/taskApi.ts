@@ -1,14 +1,23 @@
-import { apiMongo } from "@/services/Apis/api"
+import { api } from "@/services/Apis/api"
 
 interface ITask {
   description: string
   title: string
-  situation: string
+  status: number
 }
 
-export const saveTaskMongo = async (data: ITask) => {
-  return await apiMongo
+export const saveTask = async (data: ITask) => {
+  return await api
     .post("/task", data)
-    .then((res) => {})
-    .catch((err) => console.log("erro", err))
+    .then((res) => {
+      return res.data
+    })
+    .catch((error) => {
+      if (error.response.data.error) {
+        return error.response.data
+      }
+    })
+}
+export const getTasks = async () => {
+  return await api.get("/task")
 }

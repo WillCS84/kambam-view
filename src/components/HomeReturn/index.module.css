@@ -1,0 +1,18 @@
+@media (hover: hover) and (pointer: fine) {
+  .divHeader:hover .link:hover {
+    color: lightgreen;
+  }
+
+  .divHeader:hover .link:hover span {
+    transform: translateX(4px);
+  }
+}
+
+.divHeader {
+  color: blueviolet;
+  padding: 1rem 1rem 0 1rem;
+}
+
+.link {
+  text-decoration: none;
+}

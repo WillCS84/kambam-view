@@ -19,11 +19,11 @@
 
 .main {
   width: 35%;
-  height: 420px;
+  height: 30rem;
   border: 1px solid cyan;
   position: absolute;
-  left: 32%;
-  top: 30%;
+  left: 32.5%;
+  top: 21%;
   border-radius: 12px;
   background-color: lightskyblue;
   display: flex;
@@ -32,17 +32,31 @@
   padding: 0.5rem 0.5rem;
 }
 
-.form input {
+.form {
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
+  padding: 0.3rem 5rem;
+}
+
+.form input {
   border-radius: 8px;
-  width: 30rem;
-  height: 2rem;
-  padding: 0.5rem 0.5rem;
+  padding: 0.5rem 0.7rem;
+  width: 100%;
+  margin-top: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.form label {
+  font-size: 18px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.form span {
+  width: 20rem;
+  font-weight: 600;
 }
 
 .card {
@@ -50,6 +64,42 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
   align-items: center;
+  height: 100%;
+}
+
+.button {
+  padding: 0.4rem 0.4rem;
+  width: 100%;
+  text-align: center;
+  background-color: rgb(0, 108, 250);
+}
+
+.div_button {
+  padding: 0 5rem;
+  margin-top: 3rem;
+}
+
+.error {
+  color: var(--text-danger);
+  font-weight: 600;
+}
+
+.button_task {
+  display: flex;
+  padding: 0 5rem;
+  margin-top: 3rem;
+  gap: 12px;
+}
+
+.button_clear {
+  padding: 0.4rem 0.4rem;
+  width: 100%;
+  text-align: center;
 }

@@ -1,22 +1,24 @@
 .header {
   border-bottom: 1px solid cyan;
-  width: 100%;
-  height: calc(100vh - 80%);
+  width: 85%;
+  height: calc(100vh - 90%);
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: absolute;
-  padding: 0 14rem 1rem 12rem;
+  right: 0;
+  padding: 1rem 14rem 1rem 12rem;
 }
 
 .cardBody {
-  width: 100%;
-  height: calc(100vh - 28%);
+  width: 85%;
+  height: calc(100vh - 10%);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-content: center;
   align-items: center;
   bottom: 0;
+  right: 0;
   position: absolute;
 }
 
@@ -26,12 +28,12 @@
   justify-content: start;
   height: 100%;
   align-items: center;
-  padding: 1rem 1rem;
+  padding: 1.5rem 1rem;
 }
 
-.divHeader {
+.menu_header {
   color: blueviolet;
-  padding: 1rem 1rem 0 1rem;
+  padding: 1rem;
 }
 
 .link {
@@ -41,11 +43,11 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .divHeader:hover .link:hover {
+  .menu_header:hover .link:hover {
     color: lightgreen;
   }
 
-  .divHeader:hover .link:hover span {
+  .menu_header:hover .link:hover span {
     transform: translateX(4px);
   }
 }
@@ -61,4 +63,28 @@
   left: 25%;
   top: 25%;
   padding: 1rem 1rem;
+}
+
+.menu {
+  border-right: 1px solid cyan;
+  width: 15%;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  position: absolute;
+}
+
+.card_menu {
+  width: 100%;
+  height: calc(100vh - 13%);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.card_menu button {
+  width: 100%;
+  margin-bottom: 12px;
 }

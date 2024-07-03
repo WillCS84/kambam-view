@@ -1,167 +1,108 @@
 "use client"
-import Link from "next/link"
+
+import React, { useState } from "react"
 import style from "./register.module.css"
-import { IoHomeOutline } from "react-icons/io5"
-import { useFormik } from "formik"
-import { classNames } from "primereact/utils"
-import styleMain from "../page.module.css"
-import { Dropdown } from "primereact/dropdown"
-import { Button } from "primereact/button"
-import { saveUser, saveUserMongo } from "@/api/userApi"
 import { useRouter } from "next/navigation"
-import { useEffect } from "react"
-import { showSuccess } from "@/components/Toast"
+import HomeReturn from "@/components/HomeReturn"
+import Profile from "./profile"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Button } from "primereact/button"
+import { saveUser } from "@/api/userApi"
+import { showError, showSuccess } from "@/components/Toast"
+
+const userFormSchema = z.object({
+  name: z.string().nonempty("A Nome é obrigatório!"),
+  email: z.string().nonempty("O e-mail é obrigatório!").email("Formato de e-mail inválido!").toLowerCase(),
+  password: z.string().min(6, "A senha precisa de no mínimo 6 caracteres!")
+})
+
+type CreateUserFormSchema = z.infer<typeof userFormSchema>
 
 export default function Register() {
   const router = useRouter()
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      email: "",
-      password: "",
-      profile: {
-        code: "",
-        name: ""
-      }
-    },
-    validate: (data) => {
-      let errors = {
-        name: "",
-        email: "",
-        password: "",
-        profile: "",
-        isValidate: false
-      }
+  const [visible, setVisible] = useState(false)
 
-      if (!data.name) {
-        errors.name = "Nome é Obrigatório!"
-        errors.isValidate = true
-      }
-
-      if (!data.email) {
-        errors.email = "Email é obrigatório!"
-        errors.isValidate = true
-      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(data.email)) {
-        errors.email = "Email inválido!"
-        errors.isValidate = true
-      }
-
-      if (!data.password) {
-        errors.password = "Senha é obrigatório!"
-        errors.isValidate = true
-      }
-
-      if (!data.profile) {
-        errors.profile = "Selecione um perfil!"
-        errors.isValidate = true
-      }
-
-      if (errors.isValidate) {
-        return errors
-      }
-    },
-
-    onSubmit: async (values) => {
-      await saveUser(values).then((res: any) => {
-        if (!res.error) {
-          router.push("/kanban")
-          showSuccess(res.message)
-          localStorage.setItem("user", JSON.stringify(res.response.user))
-          localStorage.setItem("profile", JSON.stringify(res.response.profiles))
-        }
-      })
-      await saveUserMongo(values)
-        .then((data) => {
-          console.log("user create mongo", data)
-        })
-        .catch((err) => console.log("error", err))
-    }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<CreateUserFormSchema>({
+    resolver: zodResolver(userFormSchema)
   })
 
-  const profileOptions = [
-    { name: "Administrador", code: "1" },
-    { name: "Usuário", code: "2" },
-    { name: "Visitante", code: "3" }
-  ]
-
-  const isFormFieldValid = (touched: any, errors: any, key: string) => touched[key] && errors[key]
-  const getFormErrorMessage = (touched: any, errors: any, key: any) => {
-    return isFormFieldValid(touched, errors, key) && <small className="p-error">{errors[key]}</small>
+  const submitUserForm = async (data: CreateUserFormSchema) => {
+    await saveUser(data).then((res) => {
+      if (res.error) {
+        if (res.message?.name) {
+          showError(res.message.name)
+        }
+        showError(res.message)
+      } else {
+        localStorage.setItem("user", JSON.stringify(res.response))
+        router.push("/kanban")
+        showSuccess(res.message)
+      }
+    })
   }
 
   return (
     <div>
-      <div className={style.divHeader}>
-        <Link className={style.link} href="/">
-          <IoHomeOutline size={25} />
-        </Link>
-      </div>
-
+      <HomeReturn />
       <div className={style.main}>
         <h3>Cadastro</h3>
+
         <div className={style.card}>
-          <form className={style.form} onSubmit={formik.handleSubmit}>
-            {getFormErrorMessage(formik.touched, formik.errors, "name")}
-            <div>
-              <label htmlFor="name" className={classNames({ "p-error": formik.errors.name })}>
+          <form onSubmit={handleSubmit(submitUserForm)}>
+            <div className={style.form}>
+              <label className="text-primary" htmlFor="name">
                 Nome
               </label>
-              <input
-                type="name"
-                id="name"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
+              <input type="text" {...register("name")} placeholder="..." />
+
+              {errors.name && <span className={style.error}>{errors.name.message}</span>}
             </div>
-            {getFormErrorMessage(formik.touched, formik.errors, "email")}
-            <div>
-              <label htmlFor="email" className={classNames({ "p-error": formik.errors.email })}>
-                Email
+            <div className={style.form}>
+              <label className="text-primary" htmlFor="email">
+                E-mail
               </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
+              <input type="email" {...register("email")} placeholder="..." />
+
+              {errors.email && <span className={style.error}>{errors.email.message}</span>}
             </div>
-            {getFormErrorMessage(formik.touched, formik.errors, "password")}
-            <div>
-              <label htmlFor="password" className={classNames({ "p-error": formik.errors.password })}>
+            <div className={style.form}>
+              <label className="text-primary" htmlFor="password">
                 Senha
               </label>
-              <input
-                id="password"
-                type="password"
-                name="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
-              />
+              <input type="password" {...register("password")} placeholder="..." />
+
+              {errors.password && <span className={style.error}>{errors.password.message}</span>}
             </div>
-            {getFormErrorMessage(formik.touched, formik.errors, "profile")}
-            <div className="flex flex-column">
-              <label htmlFor="id_profile" className={classNames({ "p-error": formik.errors.profile }, "mb-1")}>
+            {/* <div className={style.form}>
+              <label className="text-primary" htmlFor="profile">
                 Perfil
               </label>
+
               <Dropdown
-                id="profile"
-                name="profile"
-                value={formik.values.profile}
-                onChange={formik.handleChange}
-                options={profileOptions}
-                optionLabel="name"
-                placeholder="Selecione"
-                style={{ padding: "0.5rem", border: "1px solid black" }}
+                value={profile}
+                onChange={(e) => setProfile(e.value)}
+                options={profiles}
+                optionLabel="description"
+                placeholder="..."
+                className="w-full md:w-full p-2 text-primary"
+                style={{ borderRadius: "8px", border: "1px solid black" }}
               />
+
+              {errors.profile && <span className={style.error}>{errors.profile.message}</span>}
+            </div> */}
+            <div className={style.div_button}>
+              <Button className={style.button} type="submit" label="Salvar" />
             </div>
-            <Button className={styleMain.button} type="submit" label="Cadastrar" />
           </form>
         </div>
       </div>
+      <Profile visible={visible} setVisible={setVisible} />
     </div>
   )
 }

@@ -1,22 +1,17 @@
 import { showError, showSuccess } from "@/components/Toast"
-import { api, apiMongo } from "@/services/Apis/api"
+import { api } from "@/services/Apis/api"
 
 interface IUser {
   name: string
   email: string
   password: string
-  profile: {
-    code: string
-    name: string
-  }
 }
 
 export const saveUser = async (data: IUser) => {
   let payload = {
     name: data.name,
     password: data.password,
-    email: data.email,
-    id_profile: data.profile.code
+    email: data.email
   }
   return await api
     .post("/user", payload)
@@ -25,14 +20,7 @@ export const saveUser = async (data: IUser) => {
     })
     .catch((error) => {
       if (error.response.data.error) {
-        showError(error.response.data.message)
+        return error.response.data
       }
     })
-}
-
-export const saveUserMongo = async (data: IUser) => {
-  return await apiMongo
-    .post("/connect", data)
-    .then((res) => {})
-    .catch((err) => console.log("erro", err))
 }

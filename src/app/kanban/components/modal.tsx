@@ -1,12 +1,15 @@
 "use client"
 import { Dialog } from "primereact/dialog"
-import { InputText } from "primereact/inputtext"
-import style from "./kanban.module.css"
+import { useEffect } from "react"
 
-export default function Task({ visible, setVisible }: any) {
+export default function Modal({ visible, setVisible, title, children }: any) {
   return (
     <Dialog
-      header="Tarefas"
+      header={
+        <div className="flex justify-content-center">
+          <span>{title}</span>
+        </div>
+      }
       visible={visible}
       style={{
         width: "40vw",
@@ -19,6 +22,8 @@ export default function Task({ visible, setVisible }: any) {
       onHide={() => {
         setVisible(false)
       }}
-    ></Dialog>
+    >
+      {children}
+    </Dialog>
   )
 }
