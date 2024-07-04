@@ -1,14 +1,16 @@
 "use client"
-import { Dispatch, SetStateAction } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import style from "../kanban.module.css"
 import { Card } from "primereact/card"
 import { Button } from "primereact/button"
 import { Tooltip } from "primereact/tooltip"
-import { deleteTask, getTasks, updateTask } from "@/api/taskApi"
+import { deleteTask, updateTask } from "@/api/taskApi"
 import { showError } from "@/components/Toast"
 import { StatusTask } from "@/components/Utils/enum"
-import { createTaskFormSchema } from "./createTask"
+import CreateTask, { createTaskFormSchema } from "./createTask"
 import { AxiosResponse } from "axios"
+import Confirmation from "@/components/modal/confirmation"
+import Modal from "./modal"
 
 interface IProfile {
   id_profile: number
@@ -28,6 +30,12 @@ interface TaskProps {
 }
 
 export default function CardTask({ tasks, setTasks, fetchTasks }: TaskProps) {
+  const [visibleModal, setVisibleModal] = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [idTaskRemove, setIdTaskRemove] = useState(0)
+  const [children, setChildren] = useState<React.ReactNode>()
+  const [title, setTitle] = useState("")
+
   const changePrevoiusStatusTask = async (task: any) => {
     task.status -= 1
     await updateTask(task)
@@ -60,7 +68,13 @@ export default function CardTask({ tasks, setTasks, fetchTasks }: TaskProps) {
     })
   }
 
-  const footer = (title: string, task: any, isButton = true) => {
+  const changeConfirmModal = async (event: boolean) => {
+    if (event && idTaskRemove !== 0) {
+      RemoveTask(idTaskRemove)
+    }
+  }
+
+  const footer = (title: string, returnTitle: string, task: any, isButton = true) => {
     // if (profiles.some((profile: IProfile) => profile.id_profile === user?.id_profile && profile.role !== "3"))
     return (
       <div className="flex justify-content-between align-items-center p-1">
@@ -80,7 +94,7 @@ export default function CardTask({ tasks, setTasks, fetchTasks }: TaskProps) {
 
         {isButton && (
           <Button
-            tooltip="Retornar etapa!"
+            tooltip={returnTitle}
             severity="info"
             outlined
             rounded
@@ -98,7 +112,10 @@ export default function CardTask({ tasks, setTasks, fetchTasks }: TaskProps) {
           outlined
           className="p-1 mx-2"
           tooltipOptions={{ position: "top", mouseTrack: true, mouseTrackTop: 15 }}
-          onClick={() => RemoveTask(task.id_task)}
+          onClick={() => {
+            setIdTaskRemove(task.id_task)
+            setVisibleModal(true)
+          }}
         >
           <i className="pi pi-times"></i>
         </Button>
@@ -123,9 +140,25 @@ export default function CardTask({ tasks, setTasks, fetchTasks }: TaskProps) {
                   }}
                 >
                   <div className={style.card_task}>
-                    <h2>{task.title}</h2>
+                    <div className="flex justify-content-between">
+                      <h2>{task.title}</h2>
+                      <Button
+                        className="mx-1"
+                        label="editar"
+                        iconPos="right"
+                        outlined
+                        style={{ border: "none" }}
+                        onClick={() => {
+                          setChildren(
+                            <CreateTask setVisible={() => setVisible(false)} setTasks={setTasks} task={task} />
+                          )
+                          setTitle("Tarefa")
+                          setVisible(true)
+                        }}
+                      ></Button>
+                    </div>
                     <span>{task.description}</span>
-                    {footer("Próxima Etapa", task)}
+                    {footer("Por Em Andamento", "", task, false)}
                   </div>
                 </Card>
               </div>
@@ -147,9 +180,25 @@ export default function CardTask({ tasks, setTasks, fetchTasks }: TaskProps) {
                   }}
                 >
                   <div className={style.card_task}>
-                    <h2>{task.title}</h2>
+                    <div className="flex justify-content-between">
+                      <h2>{task.title}</h2>
+                      <Button
+                        className="mx-1"
+                        label="editar"
+                        iconPos="right"
+                        outlined
+                        style={{ border: "none" }}
+                        onClick={() => {
+                          setChildren(
+                            <CreateTask setVisible={() => setVisible(false)} setTasks={setTasks} task={task} />
+                          )
+                          setTitle("Tarefa")
+                          setVisible(true)
+                        }}
+                      ></Button>
+                    </div>
                     <span>{task.description}</span>
-                    {footer("Próxima Etapa", task)}
+                    {footer("Por em Concluído", "Retornar para Pendente", task)}
                   </div>
                 </Card>
               </div>
@@ -171,15 +220,38 @@ export default function CardTask({ tasks, setTasks, fetchTasks }: TaskProps) {
                   }}
                 >
                   <div className={style.card_task}>
-                    <h2>{task.title}</h2>
+                    <div className="flex justify-content-between">
+                      <h2>{task.title}</h2>
+                      <Button
+                        className="mx-1"
+                        label="editar"
+                        iconPos="right"
+                        outlined
+                        style={{ border: "none" }}
+                        onClick={() => {
+                          setChildren(
+                            <CreateTask setVisible={() => setVisible(false)} setTasks={setTasks} task={task} />
+                          )
+                          setTitle("Tarefa")
+                          setVisible(true)
+                        }}
+                      ></Button>
+                    </div>
                     <span>{task.description}</span>
-                    {footer("", task)}
+                    {footer("Arquivar", "Retornar para Andamento", task)}
                   </div>
                 </Card>
               </div>
             )
         })}
       </div>
+      <Modal visible={visible} setVisible={setVisible} title={title} children={children} />
+      <Confirmation
+        title={"Deseja excluir a tarefa?"}
+        visible={visibleModal}
+        setVisible={setVisibleModal}
+        setConfirm={(e) => changeConfirmModal(e)}
+      />
     </div>
   )
 }

@@ -19,7 +19,6 @@ export const authLogin = async (data: ILogin) => {
   return await api
     .post("/login", data)
     .then((res) => {
-      console.log("res", res)
       if (!res.data.error) {
         return res.data
       }

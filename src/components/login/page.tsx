@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react"
+import React from "react"
 import style from "./page.module.css"
 import { Button } from "primereact/button"
 import Link from "next/link"
@@ -11,7 +11,6 @@ import { showSuccess } from "@/components/Toast"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { getProfiles } from "@/api/profile"
 
 const loginUserFormSchema = z.object({
   email: z.string().nonempty("O e-mail é obrigatório!").email("Formato de e-mail inválido!").toLowerCase(),

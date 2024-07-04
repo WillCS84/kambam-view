@@ -21,6 +21,7 @@ export default function kanban() {
       }
     })
   }, [])
+
   return (
     <div>
       <MenuKanban setTasks={setTarefas} />

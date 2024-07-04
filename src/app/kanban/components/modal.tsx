@@ -1,6 +1,5 @@
 "use client"
 import { Dialog } from "primereact/dialog"
-import { useEffect } from "react"
 
 export default function Modal({ visible, setVisible, title, children }: any) {
   return (

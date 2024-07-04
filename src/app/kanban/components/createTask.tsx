@@ -1,13 +1,13 @@
 "use client"
 import { Dropdown } from "primereact/dropdown"
 import { InputTextarea } from "primereact/inputtextarea"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import style from "../../register/register.module.css"
 import { Button } from "primereact/button"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { getTasks, saveTask } from "@/api/taskApi"
+import { getTasks, saveTask, updateTask } from "@/api/taskApi"
 import { showError, showSuccess } from "@/components/Toast"
 
 const statusOptions = [
@@ -17,6 +17,7 @@ const statusOptions = [
 ]
 
 const taskFormSchema = z.object({
+  id_task: z.number().optional(),
   title: z.string().nonempty("Título é obrigatório"),
   description: z.string().nonempty("descrição é obrigatório"),
   status: z.number()
@@ -24,37 +25,66 @@ const taskFormSchema = z.object({
 
 export type createTaskFormSchema = z.infer<typeof taskFormSchema>
 
-export default function CreateTask({ setVisible, setTasks }: any) {
+export default function CreateTask({ setVisible, setTasks, task = undefined }: any) {
   const [status, setStatus] = useState()
 
   const fetchTasks = async () => {
     return await getTasks()
   }
 
+  useEffect(() => {
+    console.log("effect", task)
+    if (task) {
+      setValue("title", task.title)
+      setValue("description", task.description)
+      setValue("status", task.status)
+      setValue("id_task", task.id_task)
+      setStatus(task.status)
+    }
+  }, [task])
+
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+
     formState: { errors }
   } = useForm<createTaskFormSchema>({
     resolver: zodResolver(taskFormSchema)
   })
 
   const submitTask = async (task: createTaskFormSchema) => {
-    await saveTask(task).then((res: any) => {
-      if (res.error) {
-        return showError(res.message)
-      }
-      showSuccess("Tarefa criada com sucesso!")
-      reset()
-      setVisible(false)
-      fetchTasks().then((res) => {
-        if (!res.data.error) {
-          setTasks(res.data.tasks)
+    console.log("SUBMIT", task)
+    if (task?.id_task) {
+      await updateTask(task).then((res: any) => {
+        if (res.error) {
+          return showError(res.message)
         }
+        showSuccess("Tarefa alterada com sucesso!")
+        reset()
+        setVisible(false)
+        fetchTasks().then((res) => {
+          if (!res.data.error) {
+            setTasks(res.data.tasks)
+          }
+        })
       })
-    })
+    } else {
+      await saveTask(task).then((res: any) => {
+        if (res.error) {
+          return showError(res.message)
+        }
+        showSuccess("Tarefa criada com sucesso!")
+        reset()
+        setVisible(false)
+        fetchTasks().then((res) => {
+          if (!res.data.error) {
+            setTasks(res.data.tasks)
+          }
+        })
+      })
+    }
   }
 
   return (
